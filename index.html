@@ -32,73 +32,66 @@
     </div>
   </header>
 
-  <!-- ================= HERO ================= -->
+  <!-- ================= HERO (full-bleed, по референсу) ================= -->
   <section class="hero" id="top">
-    <div class="hero__grid">
-      <div class="hero__left">
-        <div class="hero__tagline">
-          <span>KHRUSTIKS × ARCTIC</span>
-          <span>ЗИМА 2026</span>
-          <span>ЛИМИТ · 300 ШТ</span>
-        </div>
-        <h1 class="hero__title">
-          <span class="hero__title-line">COLLECTION</span>
-          <span class="hero__title-line hero__title-line--outline">ARCTIC 01<sup>™</sup></span>
-        </h1>
-        <p class="hero__lede">
-          Три силуэта. Три состояния снега. Пуховики, скроенные для настоящего мороза
-          — гусиный пух 800fp, мембрана 20k, ремонт по гарантии на пять зим.
-        </p>
-        <div class="hero__cta">
-          <a href="#collection" class="btn btn--primary">Смотреть коллекцию</a>
-          <a href="#story" class="btn btn--ghost">Философия →</a>
-        </div>
+    <div class="hero__bg" aria-hidden="true">
+      <img src="assets/фонхиро2.jpg" alt="" />
+    </div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__spotlight" aria-hidden="true"></div>
+
+    <div class="hero__figure">
+      <img id="heroFigureImg" src="assets/model-obsidian-cutout.png" alt="Модель в куртке OBSIDIAN" />
+    </div>
+
+    <div class="hero__scan">
+      <span>SCAN · N58°42' · E017°10'</span>
+      <span>−32°C</span>
+    </div>
+
+    <div class="hero__content">
+      <div class="hero__tagline">
+        <span>KHRUSTIKS × ARCTIC</span>
+        <span>ЗИМА 2026</span>
+        <span>ЛИМИТ · 300 ШТ</span>
+      </div>
+      <h1 class="hero__title">
+        <span class="hero__title-line">COLLECTION</span>
+        <span class="hero__title-line hero__title-line--outline">ARCTIC 01<sup>™</sup></span>
+      </h1>
+
+      <div class="hero__sizes" role="list" aria-label="Размер">
+        <button class="size-chip" data-size="XS">XS</button>
+        <button class="size-chip" data-size="S">S</button>
+        <button class="size-chip size-chip--active" data-size="M">M</button>
+        <button class="size-chip" data-size="L">L</button>
+        <button class="size-chip" data-size="XL">XL</button>
+        <button class="size-chip" data-size="XXL">XXL</button>
       </div>
 
-      <!-- Центральный кадр с моделью -->
-      <figure class="hero__stage" aria-label="Модель в куртке OBSIDIAN">
-        <div class="hero__ink" aria-hidden="true"></div>
-        <div class="hero__mountains" aria-hidden="true">
-          <img src="assets/фонхиро2.jpg" alt="" />
+      <div class="hero__buy-row">
+        <button class="hero__scroll" aria-label="Смотреть коллекцию" onclick="document.getElementById('collection').scrollIntoView({behavior:'smooth'})">↗</button>
+        <div class="hero__buy-info">
+          <span>ДОБАВИТЬ В КОРЗИНУ</span>
+          <b id="heroPrice">15&nbsp;990&nbsp;₽</b>
         </div>
-        <div class="hero__figure">
-          <img id="heroFigureImg" src="assets/model-obsidian-cutout.png" alt="Модель в куртке OBSIDIAN" />
-        </div>
-        <div class="hero__spotlight" aria-hidden="true"></div>
-        <div class="hero__scan">
-          <span>SCAN · N58°42' · E017°10'</span>
-          <span>−32°C</span>
-        </div>
-      </figure>
-
-      <div class="hero__right">
-        <div class="hero__thumbs" role="list">
-          <button class="thumb thumb--active" data-product="obsidian" aria-label="OBSIDIAN">
-            <div class="thumb__color thumb__color--black"></div>
-            <div class="thumb__meta">
-              <span>OBSIDIAN</span><span>01</span>
-            </div>
-          </button>
-          <button class="thumb" data-product="ashfall" aria-label="ASHFALL">
-            <div class="thumb__color thumb__color--grey"></div>
-            <div class="thumb__meta">
-              <span>ASHFALL</span><span>02</span>
-            </div>
-          </button>
-          <button class="thumb" data-product="glacier" aria-label="GLACIER">
-            <div class="thumb__color thumb__color--white"></div>
-            <div class="thumb__meta">
-              <span>GLACIER</span><span>03</span>
-            </div>
-          </button>
-        </div>
-
-        <div class="hero__price">
-          <div class="hero__price-label">СТОИМОСТЬ</div>
-          <div class="hero__price-val" id="heroPrice">15&nbsp;990&nbsp;₽</div>
-          <button class="btn btn--dark" onclick="openProduct('obsidian')">Купить →</button>
-        </div>
+        <button class="btn btn--primary" onclick="openProduct('obsidian')">Купить →</button>
       </div>
+    </div>
+
+    <div class="hero__thumbs" role="list">
+      <button class="thumb thumb--active" data-product="obsidian" aria-label="OBSIDIAN">
+        <span class="thumb__media thumb__media--black"><img src="assets/model-obsidian-cutout.png" alt="" /></span>
+        <span class="thumb__name">OBSIDIAN</span>
+      </button>
+      <button class="thumb" data-product="ashfall" aria-label="ASHFALL">
+        <span class="thumb__media thumb__media--grey"><img src="assets/model-ashfall-cutout.png" alt="" /></span>
+        <span class="thumb__name">ASHFALL</span>
+      </button>
+      <button class="thumb" data-product="glacier" aria-label="GLACIER">
+        <span class="thumb__media thumb__media--white"><img src="assets/model-glacier-cutout.png" alt="" /></span>
+        <span class="thumb__name">GLACIER</span>
+      </button>
     </div>
 
     <div class="hero__strip-wrap" aria-hidden="true">

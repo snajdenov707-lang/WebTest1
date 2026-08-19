@@ -44,6 +44,17 @@ const state = {
   color: null,       // ключ CATALOG (для смены цвета в модалке)
 };
 
+// быстрый выбор размера прямо на первом экране (как в референсе) —
+// подхватывается модалкой при открытии, чтобы не выбирать размер дважды
+let heroQuickSize = "M";
+document.querySelectorAll(".hero__sizes .size-chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll(".hero__sizes .size-chip").forEach(c => c.classList.remove("size-chip--active"));
+    chip.classList.add("size-chip--active");
+    heroQuickSize = chip.dataset.size;
+  });
+});
+
 // ============ HERO: миниатюры ============
 document.querySelectorAll(".hero__thumbs .thumb").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -57,7 +68,7 @@ document.querySelectorAll(".hero__thumbs .thumb").forEach(btn => {
     img.src = p.heroPhoto || p.photo;
     img.alt = `Модель в куртке ${p.name}`;
     // кнопка «Купить» открывает нужный товар
-    document.querySelector(".hero__price .btn").setAttribute("onclick", `openProduct('${key}')`);
+    document.querySelector(".hero__buy-row .btn--primary").setAttribute("onclick", `openProduct('${key}')`);
   });
 });
 
@@ -78,9 +89,13 @@ function openProduct(key){
   $("modalPrice").innerHTML = p.priceLabel;
   $("modalMedia").innerHTML = `<img src="${p.photo}" alt="Модель в куртке ${p.name}" />`;
 
-  // размеры — сброс
+  // размеры — сброс, с преднастройкой из чипа на первом экране
   document.querySelectorAll("#sizes button").forEach(b => {
     b.classList.remove("is-selected");
+    if (b.dataset.size === heroQuickSize) {
+      b.classList.add("is-selected");
+      state.size = heroQuickSize;
+    }
     b.onclick = () => {
       document.querySelectorAll("#sizes button").forEach(x => x.classList.remove("is-selected"));
       b.classList.add("is-selected");
