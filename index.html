@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KHRUSTIKS — Коллекция ARCTIC 01</title>
+  <meta name="description" content="KHRUSTIKS — премиальные пуховики для настоящего холода. Коллекция ARCTIC 01." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;700&family=Rubik+Mono+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ================= NAV ================= -->
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="KHRUSTIKS — на главную">
+      <span class="brand__mark">◆</span>
+      <span class="brand__name">KHRUSTIKS</span>
+    </a>
+    <nav class="nav__links" aria-label="Основное меню">
+      <a href="#collection">Коллекция</a>
+      <a href="#order">Магазин</a>
+      <a href="#story">О бренде</a>
+      <a href="#order">Заказ</a>
+    </nav>
+    <div class="nav__meta">
+      <button class="icon-btn" aria-label="Поиск">⌕</button>
+      <button class="icon-btn" aria-label="Аккаунт">◯</button>
+      <a class="icon-btn cart-btn" href="#order" aria-label="Корзина">
+        <span>◨</span><span class="cart-count" id="cartCount">0</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="top">
+    <div class="hero__grid">
+      <div class="hero__left">
+        <div class="hero__tagline">
+          <span>KHRUSTIKS × ARCTIC</span>
+          <span>ЗИМА 2026</span>
+          <span>ЛИМИТ · 300 ШТ</span>
+        </div>
+        <h1 class="hero__title">
+          <span class="hero__title-line">COLLECTION</span>
+          <span class="hero__title-line hero__title-line--outline">ARCTIC 01<sup>™</sup></span>
+        </h1>
+        <p class="hero__lede">
+          Три силуэта. Три состояния снега. Пуховики, скроенные для настоящего мороза
+          — гусиный пух 800fp, мембрана 20k, ремонт по гарантии на пять зим.
+        </p>
+        <div class="hero__cta">
+          <a href="#collection" class="btn btn--primary">Смотреть коллекцию</a>
+          <a href="#story" class="btn btn--ghost">Философия →</a>
+        </div>
+      </div>
+
+      <!-- Центральный кадр с моделью -->
+      <figure class="hero__stage" aria-label="Модель в куртке OBSIDIAN">
+        <div class="hero__ink" aria-hidden="true"></div>
+        <div class="hero__mountains" aria-hidden="true">
+          <img src="assets/hero-mountains.jpg" alt="" />
+        </div>
+        <div class="hero__figure">
+          <img id="heroFigureImg" src="assets/model-obsidian-cutout.png" alt="Модель в куртке OBSIDIAN" />
+        </div>
+        <div class="hero__scan">
+          <span>SCAN · N58°42' · E017°10'</span>
+          <span>−32°C</span>
+        </div>
+      </figure>
+
+      <div class="hero__right">
+        <div class="hero__thumbs" role="list">
+          <button class="thumb thumb--active" data-product="obsidian" aria-label="OBSIDIAN">
+            <div class="thumb__color thumb__color--black"></div>
+            <div class="thumb__meta">
+              <span>OBSIDIAN</span><span>01</span>
+            </div>
+          </button>
+          <button class="thumb" data-product="ashfall" aria-label="ASHFALL">
+            <div class="thumb__color thumb__color--grey"></div>
+            <div class="thumb__meta">
+              <span>ASHFALL</span><span>03</span>
+            </div>
+          </button>
+          <button class="thumb" data-product="glacier" aria-label="GLACIER">
+            <div class="thumb__color thumb__color--white"></div>
+            <div class="thumb__meta">
+              <span>GLACIER</span><span>02</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="hero__price">
+          <div class="hero__price-label">СТОИМОСТЬ</div>
+          <div class="hero__price-val" id="heroPrice">15&nbsp;990&nbsp;₽</div>
+          <button class="btn btn--dark" onclick="openProduct('obsidian')">Купить →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__strip-wrap" aria-hidden="true">
+      <div class="hero__strip">
+        <!-- набор фраз повторён 5 раз в каждой половине — трек шире любого монитора,
+             translateX(-50%) всегда точно совпадает с границей набора -->
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+        <!-- вторая половина — точная копия первой -->
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+        <span>KHRUSTIKS</span><span>◆</span>
+        <span>ARCTIC 01</span><span>◆</span>
+        <span>MADE FOR THE COLD</span><span>◆</span>
+        <span>WINTER 2026</span><span>◆</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STORY / MOUNTAIN BANNER (ref 4) ================= -->
+  <section class="story" id="story">
+    <div class="story__bg" aria-hidden="true">
+      <img src="assets/story-mountains.jpg" alt="" />
+    </div>
+
+    <div class="story__inner">
+      <div class="story__tag">
+        <span>K/</span><span>ЭТИКА · ХОЛОД · ВЫСОТА</span>
+      </div>
+      <h2 class="story__title">
+        <span>СОЗДАН</span>
+        <span>ДЛЯ&nbsp;ХОЛОДА</span>
+        <span>ВЫКОВАН</span>
+        <span>ЧТОБЫ&nbsp;ВЫДЕРЖАТЬ</span>
+      </h2>
+      <div class="story__meta">
+        <div>
+          <span class="story__meta-k">МАТЕРИАЛЫ</span>
+          <span>Гусиный пух 800fp · Cordura® 500D · YKK Aquaguard</span>
+        </div>
+        <div>
+          <span class="story__meta-k">ТЕМПЕРАТУРНЫЙ РЕЖИМ</span>
+          <span>−35°C комфорт · −50°C экстрим</span>
+        </div>
+        <div>
+          <span class="story__meta-k">ГАРАНТИЯ</span>
+          <span>5 зим · ремонт бесплатно</span>
+        </div>
+      </div>
+      <div class="story__signature" aria-hidden="true">KHRUSTIKS</div>
+    </div>
+  </section>
+
+  <!-- ================= COLLECTION GRID (ref 3) ================= -->
+  <section class="collection" id="collection">
+    <header class="collection__header">
+      <div>
+        <div class="collection__eyebrow">/ 01 — ЗИМА 2026</div>
+        <h2 class="collection__title">НОВАЯ КОЛЛЕКЦИЯ</h2>
+      </div>
+      <div class="collection__meta">
+        <div><span>СЕЗОН</span><span>W 26</span></div>
+        <div><span>ПОЗИЦИЙ</span><span>03</span></div>
+        <div><span>ТИРАЖ</span><span>300</span></div>
+        <button class="btn btn--ghost btn--sm">ФИЛЬТР +</button>
+      </div>
+    </header>
+
+    <div class="collection__grid" id="collectionGrid">
+      <article class="card" data-product="obsidian" onclick="openProduct('obsidian')">
+        <div class="card__media card__media--black">
+          <img src="assets/model-obsidian-cutout.png" alt="OBSIDIAN — чёрный пуховик" />
+        </div>
+        <div class="card__foot">
+          <div>
+            <div class="card__name">OBSIDIAN<sup>™</sup></div>
+            <div class="card__sub">ARCTIC 01 · чёрный</div>
+          </div>
+          <div class="card__price">15&nbsp;990&nbsp;₽</div>
+        </div>
+      </article>
+
+      <article class="card" data-product="ashfall" onclick="openProduct('ashfall')">
+        <div class="card__media card__media--grey">
+          <img src="assets/model-ashfall-cutout.png" alt="ASHFALL — серый пуховик" />
+        </div>
+        <div class="card__foot">
+          <div>
+            <div class="card__name">ASHFALL<sup>™</sup></div>
+            <div class="card__sub">ARCTIC 03 · серый</div>
+          </div>
+          <div class="card__price">15&nbsp;990&nbsp;₽</div>
+        </div>
+      </article>
+
+      <article class="card" data-product="glacier" onclick="openProduct('glacier')">
+        <div class="card__media card__media--white">
+          <img src="assets/model-glacier-cutout.png" alt="GLACIER — белый пуховик" />
+        </div>
+        <div class="card__foot">
+          <div>
+            <div class="card__name">GLACIER<sup>™</sup></div>
+            <div class="card__sub">ARCTIC 02 · белый</div>
+          </div>
+          <div class="card__price">15&nbsp;990&nbsp;₽</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= SHOP / ORDER ================= -->
+  <section class="order" id="order">
+    <div class="order__grid">
+      <aside class="order__left">
+        <div class="order__eye">/ 03 — ОФОРМЛЕНИЕ</div>
+        <h2 class="order__title">
+          ЗАКАЗ<br/>
+          НАПРЯМУЮ<br/>
+          <span>БЕЗ ПОСРЕДНИКОВ</span>
+        </h2>
+        <ul class="order__list">
+          <li>Отправка за 24 часа</li>
+          <li>СДЭК, Почта России, Курьер</li>
+          <li>Оплата при получении</li>
+          <li>Возврат 14 дней</li>
+        </ul>
+        <div class="order__contacts">
+          <a href="mailto:hello@khrustiks.ru">hello@khrustiks.ru</a>
+          <a href="tel:+79999999999">+7 (999) 999 99 99</a>
+          <a href="https://t.me/khrustiks">t.me/khrustiks</a>
+        </div>
+      </aside>
+
+      <form class="order__form" id="orderForm" novalidate>
+        <div class="order__form-head">
+          <span>ЗАЯВКА №<span id="orderNo">—</span></span>
+          <span id="orderSummary">Товар не выбран</span>
+        </div>
+
+        <!-- скрытые поля товара -->
+        <input type="hidden" name="product" id="fProduct" value="" />
+        <input type="hidden" name="color"   id="fColor"   value="" />
+        <input type="hidden" name="size"    id="fSize"    value="" />
+        <input type="hidden" name="price"   id="fPrice"   value="" />
+
+        <div class="field-row">
+          <label class="field">
+            <span>ИМЯ *</span>
+            <input name="name" required autocomplete="name" />
+          </label>
+          <label class="field">
+            <span>ТЕЛЕФОН *</span>
+            <input name="phone" required inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___ __ __" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>EMAIL *</span>
+          <input type="email" name="email" required autocomplete="email" />
+        </label>
+
+        <div class="field-row">
+          <label class="field field--grow">
+            <span>ГОРОД *</span>
+            <input name="city" required autocomplete="address-level2" />
+          </label>
+          <label class="field">
+            <span>ИНДЕКС</span>
+            <input name="zip" inputmode="numeric" autocomplete="postal-code" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>АДРЕС ДОСТАВКИ *</span>
+          <input name="address" required autocomplete="street-address" placeholder="Улица, дом, квартира" />
+        </label>
+
+        <fieldset class="field field--radio">
+          <legend>СПОСОБ ДОСТАВКИ *</legend>
+          <label><input type="radio" name="delivery" value="СДЭК" required checked /><span>СДЭК</span></label>
+          <label><input type="radio" name="delivery" value="Почта России" /><span>Почта России</span></label>
+          <label><input type="radio" name="delivery" value="Курьер" /><span>Курьер</span></label>
+        </fieldset>
+
+        <label class="field">
+          <span>КОММЕНТАРИЙ</span>
+          <textarea name="comment" rows="2" placeholder="Пункт выдачи, время, пожелания"></textarea>
+        </label>
+
+        <label class="field field--check">
+          <input type="checkbox" required id="agree" />
+          <span>Согласен на обработку персональных данных</span>
+        </label>
+
+        <div class="order__submit">
+          <div class="order__total">
+            <span>ИТОГО</span>
+            <b id="totalPrice">0&nbsp;₽</b>
+          </div>
+          <button type="submit" class="btn btn--primary btn--lg">ОФОРМИТЬ ЗАКАЗ</button>
+        </div>
+
+        <div class="order__status" id="orderStatus" hidden></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="foot">
+    <div class="foot__row">
+      <div class="foot__brand">
+        <span class="brand__mark">◆</span> KHRUSTIKS
+        <p>Пуховики для настоящего холода.<br/>Собрано вручную. Санкт-Петербург.</p>
+      </div>
+      <div class="foot__cols">
+        <div>
+          <h4>Магазин</h4>
+          <a href="#collection">Коллекция ARCTIC 01</a>
+          <a href="#order">Оформить заказ</a>
+          <a href="#story">О бренде</a>
+        </div>
+        <div>
+          <h4>Помощь</h4>
+          <a href="#">Размерная сетка</a>
+          <a href="#">Доставка и возврат</a>
+          <a href="#">Гарантия и ремонт</a>
+        </div>
+        <div>
+          <h4>Связь</h4>
+          <a href="mailto:hello@khrustiks.ru">hello@khrustiks.ru</a>
+          <a href="https://t.me/khrustiks">Telegram</a>
+          <a href="https://instagram.com/khrustiks">Instagram*</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot__copy">
+      <span>© 2026 KHRUSTIKS · Все права защищены</span>
+      <span>* Meta признана экстремистской организацией и запрещена в РФ</span>
+    </div>
+  </footer>
+
+  <!-- ================= PRODUCT MODAL ================= -->
+  <div class="modal" id="productModal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__backdrop" onclick="closeProduct()"></div>
+    <div class="modal__card">
+      <button class="modal__close" onclick="closeProduct()" aria-label="Закрыть">✕</button>
+      <div class="modal__media" id="modalMedia"></div>
+      <div class="modal__body">
+        <div class="modal__eye" id="modalEye">ARCTIC 01</div>
+        <h3 class="modal__title" id="modalTitle">OBSIDIAN</h3>
+        <p class="modal__desc" id="modalDesc"></p>
+
+        <div class="modal__block">
+          <div class="modal__label">РАЗМЕР</div>
+          <div class="sizes" id="sizes">
+            <button data-size="XS">XS</button>
+            <button data-size="S">S</button>
+            <button data-size="M">M</button>
+            <button data-size="L">L</button>
+            <button data-size="XL">XL</button>
+            <button data-size="XXL">XXL</button>
+          </div>
+        </div>
+
+        <div class="modal__block">
+          <div class="modal__label">ЦВЕТ</div>
+          <div class="colors" id="colors"></div>
+        </div>
+
+        <div class="modal__foot">
+          <div class="modal__price" id="modalPrice">—</div>
+          <button class="btn btn--primary btn--lg" id="modalCta">ОФОРМИТЬ →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
