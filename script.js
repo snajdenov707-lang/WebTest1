@@ -71,9 +71,18 @@ const CATALOG = {
   },
 };
 
-// ============ CRM ENDPOINT ============
-// Вставь сюда URL веб-приложения из Google Apps Script (см. crm/setup.md).
-// Пока пусто — форма сохранит заявку локально и покажет её JSON.
+// ============ CRM / БАЗА ДАННЫХ (Supabase) ============
+// Заявки летят напрямую в таблицу public.orders проекта Supabase
+// (организация Khrust, проект zendention). Смотреть заявки —
+// в Supabase Dashboard → Table Editor → orders (см. crm/setup.md).
+// Ключ ниже — publishable (анонимный, только на INSERT по RLS-политике,
+// читать чужие заявки с ним нельзя) — это нормально светить на клиенте.
+const SUPABASE_URL = "https://sexrlsgmibzxajqekemy.supabase.co";
+const SUPABASE_KEY = "sb_publishable_KJVs9700LAvmXCFvdfaPRA_UiXnlpUQ";
+
+// (опционально, можно оставить пустым) — если вставишь сюда URL веб-приложения
+// из Google Apps Script (см. crm/setup.md), заявки ДОПОЛНИТЕЛЬНО продублируются
+// и в Google Таблицу, параллельно с Supabase.
 const CRM_ENDPOINT = ""; // "https://script.google.com/macros/s/AKfycb.../exec"
 
 // ============ STATE ============
@@ -302,20 +311,42 @@ document.getElementById("orderForm").addEventListener("submit", async e => {
   data.source = "khrustiks.ru";
 
   try {
+    // основной путь — реальная запись в Supabase (public.orders)
+    const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Prefer": "return=minimal",
+      },
+      body: JSON.stringify({
+        order_no: data.orderNo,
+        product: data.product,
+        color: data.color,
+        size: data.size,
+        price: Number(data.price) || null,
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        city: data.city,
+        zip: data.zip,
+        address: data.address,
+        delivery: data.delivery,
+        comment: data.comment,
+        source: data.source,
+      }),
+    });
+    if (!dbRes.ok) throw new Error("HTTP " + dbRes.status);
+
+    // (опционально) дублируем в Google Таблицу — best-effort, не роняем
+    // успешную заявку, если этот шаг не настроен или временно недоступен
     if (CRM_ENDPOINT) {
-      // Google Apps Script принимает POST как text/plain, чтобы не срабатывал CORS-preflight
-      const res = await fetch(CRM_ENDPOINT, {
+      fetch(CRM_ENDPOINT, {
         method: "POST",
         headers: {"Content-Type": "text/plain;charset=utf-8"},
         body: JSON.stringify(data),
-      });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const json = await res.json().catch(() => ({ok:true}));
-      if (json.ok === false) throw new Error(json.error || "CRM error");
-    } else {
-      // dev-режим: просто эмулируем задержку
-      await new Promise(r => setTimeout(r, 600));
-      console.log("[KHRUSTIKS · CRM_ENDPOINT не задан] Заявка:", data);
+      }).catch(err => console.warn("[KHRUSTIKS] Google Sheets дубль не отправился:", err));
     }
 
     status.classList.add("is-ok");
