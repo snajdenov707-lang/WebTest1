@@ -1,3 +1,42 @@
+// ============ AUTH GATE (Sign In / Sign Up) ============
+// Пока без бэкенда: сабмит любой формы просто закрывает окно и
+// открывает сайт. Валидация полей — только браузерная (required).
+(function initAuthGate(){
+  const gate = document.getElementById("authGate");
+  if (!gate) return;
+
+  document.body.style.overflow = "hidden";
+
+  const tabs = gate.querySelectorAll(".authgate__tab");
+  const forms = {
+    signin: document.getElementById("signinForm"),
+    signup: document.getElementById("signupForm"),
+  };
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => {
+        t.classList.remove("authgate__tab--active");
+        t.setAttribute("aria-selected", "false");
+      });
+      tab.classList.add("authgate__tab--active");
+      tab.setAttribute("aria-selected", "true");
+      const key = tab.dataset.tab;
+      Object.entries(forms).forEach(([k, f]) => { f.hidden = k !== key; });
+    });
+  });
+
+  function enterSite(e){
+    e.preventDefault();
+    gate.classList.add("authgate--closing");
+    document.body.style.overflow = "";
+    setTimeout(() => gate.remove(), 400);
+  }
+
+  forms.signin.addEventListener("submit", enterSite);
+  forms.signup.addEventListener("submit", enterSite);
+})();
+
 // ============ КАТАЛОГ (порядок = чёрный → серый → белый) ============
 const CATALOG = {
   obsidian: {
@@ -137,11 +176,73 @@ function closeProduct(){
   document.body.style.overflow = "";
 }
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeProduct(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeProduct(); closeProfile(); } });
 
 // делаем функции доступными глобально (используются в onclick=)
 window.openProduct = openProduct;
 window.closeProduct = closeProduct;
+
+// ============ ПРОФИЛЬ (адрес доставки + способ оплаты) ============
+// Бэкенда пока нет — данные хранятся в localStorage браузера.
+const PROFILE_KEY = "khrustiks_profile";
+
+function loadProfile(){
+  try {
+    const raw = localStorage.getItem(PROFILE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function saveProfileData(data){
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(data));
+}
+
+function refreshProfileDot(){
+  $("profileDot").hidden = !loadProfile();
+}
+
+const profileModal = $("profileModal");
+const profileForm = $("profileForm");
+
+function openProfile(){
+  const saved = loadProfile();
+  if (saved) {
+    Object.entries(saved).forEach(([key, val]) => {
+      const field = profileForm.elements[key];
+      if (!field) return;
+      if (field instanceof RadioNodeList) {
+        [...field].forEach(r => { r.checked = r.value === val; });
+      } else {
+        field.value = val;
+      }
+    });
+  }
+  $("profileStatus").hidden = true;
+  profileModal.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+function closeProfile(){
+  if (profileModal) profileModal.hidden = true;
+  document.body.style.overflow = "";
+}
+window.openProfile = openProfile;
+window.closeProfile = closeProfile;
+
+if (profileForm) {
+  profileForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(profileForm).entries());
+    saveProfileData(data);
+    refreshProfileDot();
+    const status = $("profileStatus");
+    status.hidden = false;
+    status.className = "order__status is-ok";
+    status.textContent = "Сохранено — данные подставятся при оформлении заказа.";
+  });
+}
+
+refreshProfileDot();
 
 // ============ ЗАПОЛНЕНИЕ ФОРМЫ ============
 function fillOrder(){
@@ -160,6 +261,17 @@ function fillOrder(){
   // счётчик в корзине (визуально)
   const cc = $("cartCount");
   cc.textContent = (parseInt(cc.textContent, 10) || 0) + 1;
+
+  // подставляем сохранённые в профиле контакты/адрес — только в пустые поля,
+  // чтобы не затирать то, что покупатель уже успел напечатать
+  const saved = loadProfile();
+  if (saved) {
+    const orderForm = $("orderForm");
+    ["name", "phone", "email", "city", "zip", "address"].forEach(key => {
+      const field = orderForm.elements[key];
+      if (field && !field.value && saved[key]) field.value = saved[key];
+    });
+  }
 }
 
 function randomOrderNo(){

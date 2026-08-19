@@ -11,6 +11,56 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- ================= AUTH GATE (Sign In / Sign Up) =================
+       Открывается первым поверх всего сайта. Без валидации и БД —
+       сабмит любой формы просто закрывает окно и показывает сайт. -->
+  <div class="authgate" id="authGate">
+    <div class="authgate__bg" aria-hidden="true">
+      <img src="assets/фонрег.jpg" alt="" />
+    </div>
+    <div class="authgate__scrim" aria-hidden="true"></div>
+
+    <div class="authgate__card" role="dialog" aria-modal="true" aria-label="Sign in or sign up">
+      <div class="authgate__brand">
+        <span class="brand__mark">◆</span>
+        <span>KHRUSTIKS</span>
+      </div>
+
+      <div class="authgate__tabs" role="tablist">
+        <button class="authgate__tab authgate__tab--active" data-tab="signin" role="tab" aria-selected="true">Sign In</button>
+        <button class="authgate__tab" data-tab="signup" role="tab" aria-selected="false">Sign Up</button>
+      </div>
+
+      <form class="authgate__form" id="signinForm" data-form="signin" novalidate>
+        <label class="authgate__field">
+          <span>Email</span>
+          <input type="email" name="email" placeholder="you@example.com" required />
+        </label>
+        <label class="authgate__field">
+          <span>Password</span>
+          <input type="password" name="password" placeholder="••••••••" required />
+        </label>
+        <button type="submit" class="btn btn--primary authgate__submit">Sign In →</button>
+      </form>
+
+      <form class="authgate__form" id="signupForm" data-form="signup" novalidate hidden>
+        <label class="authgate__field">
+          <span>Name</span>
+          <input type="text" name="name" placeholder="Your name" required />
+        </label>
+        <label class="authgate__field">
+          <span>Email</span>
+          <input type="email" name="email" placeholder="you@example.com" required />
+        </label>
+        <label class="authgate__field">
+          <span>Password</span>
+          <input type="password" name="password" placeholder="Min. 8 characters" required />
+        </label>
+        <button type="submit" class="btn btn--primary authgate__submit">Create Account →</button>
+      </form>
+    </div>
+  </div>
+
   <!-- ================= NAV ================= -->
   <header class="nav">
     <a class="brand" href="#top" aria-label="KHRUSTIKS — на главную">
@@ -25,13 +75,18 @@
     </nav>
     <div class="nav__meta">
       <button class="icon-btn" aria-label="Поиск">⌕</button>
-      <button class="icon-btn" aria-label="Аккаунт">◯</button>
+      <button class="icon-btn profile-btn" aria-label="Профиль" onclick="openProfile()">
+        <span>◯</span><span class="profile-dot" id="profileDot" hidden></span>
+      </button>
       <a class="icon-btn cart-btn" href="#order" aria-label="Корзина">
         <span>◨</span><span class="cart-count" id="cartCount">0</span>
       </a>
     </div>
   </header>
 
+  <!-- .page — закруглённый низ «плашки» сайта, overflow:hidden только тут
+       (не на body/html), поэтому sticky-шапка не ломается -->
+  <div class="page">
   <!-- ================= HERO (full-bleed, по референсу) ================= -->
   <section class="hero" id="top">
     <div class="hero__bg" aria-hidden="true">
@@ -383,6 +438,7 @@
       <span>* Meta признана экстремистской организацией и запрещена в РФ</span>
     </div>
   </footer>
+  </div><!-- /.page -->
 
   <!-- ================= PRODUCT MODAL ================= -->
   <div class="modal" id="productModal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -416,6 +472,70 @@
           <div class="modal__price" id="modalPrice">—</div>
           <button class="btn btn--primary btn--lg" id="modalCta">ОФОРМИТЬ →</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PROFILE MODAL ================= -->
+  <div class="modal" id="profileModal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+    <div class="modal__backdrop" onclick="closeProfile()"></div>
+    <div class="modal__card modal__card--form">
+      <button class="modal__close" onclick="closeProfile()" aria-label="Закрыть">✕</button>
+      <div class="modal__body modal__body--full">
+        <div class="modal__eye">ЛИЧНЫЙ КАБИНЕТ</div>
+        <h3 class="modal__title" id="profileTitle">Профиль</h3>
+        <p class="modal__desc">Сохраните данные один раз — они сами подставятся при оформлении заказа.</p>
+
+        <form id="profileForm" novalidate>
+          <div class="field-row">
+            <label class="field">
+              <span>ИМЯ</span>
+              <input name="name" autocomplete="name" />
+            </label>
+            <label class="field">
+              <span>ТЕЛЕФОН</span>
+              <input name="phone" inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___ __ __" />
+            </label>
+          </div>
+
+          <label class="field">
+            <span>EMAIL</span>
+            <input type="email" name="email" autocomplete="email" />
+          </label>
+
+          <div class="field-row">
+            <label class="field field--grow">
+              <span>ГОРОД</span>
+              <input name="city" autocomplete="address-level2" />
+            </label>
+            <label class="field">
+              <span>ИНДЕКС</span>
+              <input name="zip" inputmode="numeric" autocomplete="postal-code" />
+            </label>
+          </div>
+
+          <label class="field">
+            <span>АДРЕС ДОСТАВКИ</span>
+            <input name="address" autocomplete="street-address" placeholder="Улица, дом, квартира" />
+          </label>
+
+          <fieldset class="field field--radio">
+            <legend>СПОСОБ ОПЛАТЫ</legend>
+            <label><input type="radio" name="payment" value="Карта при получении" checked /><span>Карта при получении</span></label>
+            <label><input type="radio" name="payment" value="Наличные при получении" /><span>Наличные</span></label>
+            <label><input type="radio" name="payment" value="Онлайн-перевод" /><span>Онлайн-перевод</span></label>
+          </fieldset>
+
+          <div class="order__submit">
+            <div class="order__total">
+              <span>ДАННЫЕ</span>
+              <b>хранятся локально</b>
+            </div>
+            <button type="submit" class="btn btn--primary btn--lg">Сохранить →</button>
+          </div>
+
+          <div class="order__status" id="profileStatus" hidden></div>
+        </form>
       </div>
     </div>
   </div>
