@@ -212,7 +212,7 @@ body::before{
   display:flex;gap:32px;align-items:center;width:max-content;
   font-family:var(--f-display);font-size:14px;letter-spacing:.2em;color:var(--ink-2);
   white-space:nowrap;
-  animation:strip 30s linear infinite;
+  animation:strip 60s linear infinite;
 }
 @keyframes strip{to{transform:translateX(-50%)}}
 
@@ -335,6 +335,14 @@ body::before{
 }
 .card__name{font-family:var(--f-display);font-size:20px;letter-spacing:.01em}
 .card__sub{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-3);text-transform:uppercase;margin-top:4px}
+.card__color{
+  display:flex;align-items:center;gap:8px;margin-top:10px;
+  font-family:var(--f-condensed);font-size:11px;letter-spacing:.14em;color:var(--ink-2);text-transform:uppercase;
+}
+.card__color-dot{
+  width:12px;height:12px;border-radius:50%;flex-shrink:0;
+  border:1px solid rgba(244,242,238,0.25);
+}
 .card__price{font-family:var(--f-display);font-size:18px;letter-spacing:-.01em;color:var(--ink)}
 
 /* ================= ORDER ================= */

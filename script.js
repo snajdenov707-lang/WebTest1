@@ -9,11 +9,10 @@ const CATALOG = {
     priceLabel: "15 990 ₽",
     desc: "Флагманский силуэт коллекции. Матовый чёрный, 800fp гусиный пух, ветрозащитная мембрана. Скроен для перехода зимнего города в горы без пересадки.",
     photo: "assets/model-obsidian-cutout.png",
-    heroPhoto: "assets/heroObsa-cutout.png", // крупный кадр «по пояс» — только для hero
   },
   ashfall: {
     name: "ASHFALL",
-    line: "ARCTIC 03",
+    line: "ARCTIC 02",
     color: "Серый",
     colorHex: "#6d6d6d",
     price: 15990,
@@ -23,7 +22,7 @@ const CATALOG = {
   },
   glacier: {
     name: "GLACIER",
-    line: "ARCTIC 02",
+    line: "ARCTIC 03",
     color: "Белый",
     colorHex: "#e8e5df",
     price: 15990,
