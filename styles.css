@@ -109,34 +109,44 @@ body::before{
     linear-gradient(180deg, rgba(5,5,5,0.4) 0%, transparent 20%, transparent 76%, rgba(5,5,5,0.75) 100%);
 }
 
+/* рамка содержимого — центрирована и ограничена по ширине (var(--maxw)).
+   Фигура/текст/миниатюры/scan висят на НЕЙ, а не на сырой ширине секции —
+   иначе на широких мониторах текст «плавает» по центру экрана, а фигура
+   улетает к самому правому физическому краю (см. assets/правка1.png). */
+.hero__frame{
+  position:relative;z-index:2;
+  max-width:var(--maxw);margin:0 auto;
+  height:min(880px, 94vh);
+  padding:0 var(--pad);
+}
+
 .hero__spotlight{
-  position:absolute;z-index:2;top:-4%;left:68%;transform:translateX(-50%);
+  position:absolute;z-index:2;top:-4%;left:64%;transform:translateX(-50%);
   width:44%;height:52%;
   background:radial-gradient(ellipse 60% 100% at 50% 0%, rgba(255,255,255,0.3), rgba(255,255,255,0.1) 45%, transparent 75%);
   mix-blend-mode:screen;pointer-events:none;
 }
 
 .hero__figure{
-  position:absolute;z-index:2;right:5%;bottom:0;
-  width:min(36vw, 460px);height:90%;
+  position:absolute;z-index:2;right:8%;bottom:0;
+  width:min(32vw, 420px);height:90%;
   display:flex;align-items:flex-end;justify-content:center;
 }
 .hero__figure img{width:100%;height:100%;object-fit:contain;object-position:bottom;display:block;filter:drop-shadow(0 40px 50px rgba(0,0,0,0.55))}
 
 .hero__scan{
-  position:absolute;top:22px;right:var(--pad);z-index:5;
+  position:absolute;top:22px;right:0;z-index:5;
   display:flex;gap:16px;color:var(--ink-2);
   font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;
 }
 .hero__scan::before{content:"◉";color:var(--danger);animation:blink 1.4s infinite}
 @keyframes blink{50%{opacity:.3}}
 
-/* текстовый блок лежит прямо на фото, прижат к низу как на референсе */
+/* текстовый блок лежит прямо на фото, прижат к низу и к левому краю рамки —
+   без margin:auto, иначе он центрируется внутри рамки, а не прилегает к краю */
 .hero__content{
-  position:relative;z-index:3;
-  max-width:calc(var(--maxw) - var(--pad)*2);margin:0 auto;
-  padding:110px var(--pad) 120px;
-  min-height:min(880px, 94vh);
+  position:relative;z-index:3;height:100%;
+  padding:110px 0 120px;
   display:flex;flex-direction:column;justify-content:flex-end;
 }
 .hero__content > *{max-width:620px;width:100%;container-type:inline-size}
@@ -176,9 +186,11 @@ body::before{
 .hero__buy-info span{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-3);text-transform:uppercase}
 .hero__buy-info b{font-family:var(--f-display);font-size:24px;color:var(--ink);font-weight:400}
 
-/* плавающие миниатюры поверх фото справа, как на референсе */
+/* плавающие миниатюры поверх фото справа, как на референсе.
+   right:0 — рамка (.hero__frame) уже даёт padding:var(--pad), двойной
+   отступ не нужен (для absolute containing block служит padding-box) */
 .hero__thumbs{
-  position:absolute;z-index:4;top:110px;right:var(--pad);
+  position:absolute;z-index:4;top:110px;right:0;
   display:flex;flex-direction:column;gap:10px;
 }
 .thumb{
@@ -483,10 +495,10 @@ body::before{
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1100px){
-  .hero__figure{width:min(42vw, 380px);right:3%}
-  .hero__thumbs{top:90px;right:12px}
+  .hero__figure{width:min(40vw, 360px);right:0}
+  .hero__thumbs{top:90px}
   .thumb{width:160px}
-  .hero__content{padding:100px var(--pad) 110px}
+  .hero__content{padding:100px 0 110px}
   .collection__grid{grid-template-columns:1fr 1fr}
   .order__grid{grid-template-columns:1fr;gap:40px}
   .foot__row{grid-template-columns:1fr;gap:40px}
@@ -500,6 +512,10 @@ body::before{
   /* на мобильном фигура и текст больше не накладываются на фото —
      фигура в потоке сверху, текст обычным блоком под ней */
   .hero{min-height:auto}
+  /* frame больше не фиксированной высоты — иначе на мобильном (потоковая
+     раскладка) под фиксированные 94vh остаётся пустой хвост или контент
+     перехлёстывает через край рамки */
+  .hero__frame{height:auto;padding:0}
   .hero__figure{position:relative;right:auto;bottom:auto;width:66%;height:320px;margin:76px auto 0}
   .hero__spotlight{left:50%;width:70%;top:56px}
   .hero__scan{top:14px;right:14px;font-size:9px;gap:10px}
