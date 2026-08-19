@@ -114,12 +114,19 @@ body::before{
   overflow:hidden;
   position:relative;
 }
-.hero__left{display:flex;flex-direction:column;justify-content:space-between;padding:8px 6px}
+/* без min-width:0 длинное неразрывное слово (напр. "COLLECTION" в большом клампе)
+   раздувает min-content grid-колонки и схлопывает соседние — это разрыв, а не косметика */
+.hero__grid > *{min-width:0}
+.hero__left{display:flex;flex-direction:column;justify-content:space-between;padding:8px 6px;container-type:inline-size}
 .hero__tagline{display:flex;flex-direction:column;gap:8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.24em;color:var(--ink-3);text-transform:uppercase}
 .hero__title{margin:24px 0 0}
 .hero__title-line{
-  display:block;font-family:var(--f-display);font-size:clamp(48px, 8vw, 118px);
+  display:block;font-family:var(--f-display);
+  /* завязано на реальную ширину колонки (cqw), а не на vw — слово "COLLECTION"
+     всегда помещается в одну строку, сколько бы grid ни отдал этой колонке */
+  font-size:clamp(28px, 12.5cqw, 76px);
   line-height:0.92;letter-spacing:-.02em;color:var(--ink);
+  overflow-wrap:break-word; /* финальная страховка на случай экстремально узкой колонки */
 }
 .hero__title-line--outline{
   color:transparent;-webkit-text-stroke:1.5px var(--ink);
@@ -145,10 +152,22 @@ body::before{
     radial-gradient(ellipse 90% 60% at 50% 100%, #000, transparent 70%);
   z-index:2;
 }
-.hero__figure{position:relative;z-index:3;width:68%;margin-bottom:0;display:flex;justify-content:center;align-items:flex-end;height:100%}
-.hero__figure img{width:100%;height:auto;max-height:100%;object-fit:contain;object-position:bottom;display:block;filter:drop-shadow(0 30px 40px rgba(0,0,0,0.6))}
+/* min-width — не косметика: без явного абсолютного компонента percentage-width
+   flex-child внутри grid-колонки (1.6fr) не даёт вклада в intrinsic-размер трека,
+   и колонка схлопывается почти в ноль. min-width чинит именно это. */
+.hero__figure{position:relative;z-index:3;width:68%;min-width:230px;max-width:480px;margin-bottom:0;display:flex;justify-content:center;align-items:flex-end;height:100%}
+/* width+height оба явные — object-fit:contain честно вписывает картинку по пропорциям,
+   не сплющивая её (раньше height:auto+max-height могли исказить кадр) */
+.hero__figure img{width:100%;height:100%;object-fit:contain;object-position:bottom;display:block;filter:drop-shadow(0 30px 40px rgba(0,0,0,0.6))}
+/* «свет от лампы» сверху — мягкий блик на капюшоне, как на референсе */
+.hero__spotlight{
+  position:absolute;z-index:4;top:-6%;left:50%;transform:translateX(-50%);
+  width:64%;height:46%;
+  background:radial-gradient(ellipse 60% 100% at 50% 0%, rgba(255,255,255,0.4), rgba(255,255,255,0.12) 45%, transparent 75%);
+  mix-blend-mode:screen;pointer-events:none;
+}
 .hero__scan{
-  position:absolute;top:16px;right:16px;z-index:4;
+  position:absolute;top:16px;right:16px;z-index:5;
   display:flex;gap:16px;color:var(--ink-3);
   font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;
 }

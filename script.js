@@ -9,6 +9,7 @@ const CATALOG = {
     priceLabel: "15 990 ₽",
     desc: "Флагманский силуэт коллекции. Матовый чёрный, 800fp гусиный пух, ветрозащитная мембрана. Скроен для перехода зимнего города в горы без пересадки.",
     photo: "assets/model-obsidian-cutout.png",
+    heroPhoto: "assets/heroObsa-cutout.png", // крупный кадр «по пояс» — только для hero
   },
   ashfall: {
     name: "ASHFALL",
@@ -54,7 +55,7 @@ document.querySelectorAll(".hero__thumbs .thumb").forEach(btn => {
     document.getElementById("heroPrice").innerHTML = p.priceLabel;
     // подменяем фото героя
     const img = document.getElementById("heroFigureImg");
-    img.src = p.photo;
+    img.src = p.heroPhoto || p.photo;
     img.alt = `Модель в куртке ${p.name}`;
     // кнопка «Купить» открывает нужный товар
     document.querySelector(".hero__price .btn").setAttribute("onclick", `openProduct('${key}')`);
