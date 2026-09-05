@@ -20,41 +20,36 @@
 
   --pad:           clamp(20px, 4vw, 56px);
   --radius:        14px;
-  --maxw:          1560px; /* потолок ширины контента — не даём блокам расползаться на широких мониторах */
+  --maxw:          1560px; /* потолок ширины контента */
 }
 
 /* ================= RESET / BASE ================= */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-html{scroll-behavior:smooth}
-/* фон «за плашкой» сайта — весь контент сидит внутри body с отступом
-   (см. ниже), сквозь этот отступ видна гора, как на референсе (фото 2) */
+html{scroll-behavior:smooth;overflow-x:hidden}
+/* фон-гора на html; body с margin делает «плашку» сайта, сквозь margin
+   виден фон */
 html{
   background:#000 url("assets/фондляфона.jpg") center/cover no-repeat fixed;
 }
 body{
-  /* прозрачный — сквозь скруглённые углы .page/.nav должна быть видна
-     гора на html, а не сплошной var(--bg) */
   color:var(--ink);
   font-family:var(--f-body);
   font-size:15px;
   line-height:1.5;
   -webkit-font-smoothing:antialiased;
-  /* overflow-x:hidden НЕ ставим на body: по CSS-спеке non-visible по одной
-     оси принудительно коэрсит другую ось тоже в non-visible (auto) — body
-     становится «скролл-контейнером» и ломает position:sticky у .nav.
-     Горизонтальный оverflow уже перекрыт html{overflow-x:hidden} ниже. */
+  /* не ставим overflow-x:hidden — коэрсит overflow-y в auto,
+     из-за чего sticky на .nav перестаёт работать */
   max-width:100vw;
   margin:clamp(10px, 2.2vw, 32px);
   box-shadow:0 30px 90px rgba(0,0,0,0.6);
 }
-html{overflow-x:hidden}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer;background:none;border:0;color:inherit}
 sup{font-size:0.5em;vertical-align:super;letter-spacing:0;margin-left:2px;opacity:.7}
 
-/* субтильная плёнка шумa на всей странице */
+/* плёнка шума поверх всей страницы */
 body::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:1000;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' seed='7'/><feColorMatrix values='0 0 0 0 0.06  0 0 0 0 0.06  0 0 0 0 0.06  0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
@@ -76,8 +71,7 @@ body::before{
   background:radial-gradient(ellipse 70% 60% at 50% 40%, rgba(5,5,5,0.25), rgba(5,5,5,0.72) 100%);
 }
 
-/* «жидкое стекло» — полупрозрачная плашка с backdrop-filter, размыт фон
-   позади неё; плашка заметно меньше экрана (~420px против всего вьюпорта) */
+/* стеклянная плашка — backdrop-filter размывает фон позади */
 .authgate__card{
   position:relative;z-index:2;
   width:min(420px, 88vw);
@@ -112,10 +106,7 @@ body::before{
 }
 .authgate__tab--active{background:var(--ink);color:var(--bg)}
 .authgate__form{position:relative;z-index:1;display:flex;flex-direction:column}
-/* [hidden] у форм иначе теряет display:none — атрибутный UA-селектор
-   и классовый авторский правило имеют равную специфичность, и авторский
-   каскадно побеждает несмотря на [hidden] (обе SIGN IN/SIGN UP формы
-   рендерились одновременно) */
+/* переопределяем UA-стиль [hidden] — иначе display:flex его перебивает */
 .authgate__form[hidden]{display:none}
 .authgate__field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
 .authgate__field span{
@@ -147,13 +138,11 @@ body::before{
   background:rgba(5,5,5,0.72);
   backdrop-filter:blur(12px);
   border-bottom:1px solid var(--line);
-  border-radius:22px 22px 0 0; /* верхние углы «плашки» — .nav не внутри
-    .page, поэтому overflow:hidden там не мешает sticky */
+  border-radius:22px 22px 0 0; /* верхние углы «плашки» */
 }
 
-/* .page — hero...footer, скруглены только нижние углы (верх стыкуется
-   с .nav вплотную, там скругление не нужно). overflow:hidden только
-   здесь, не на body/html, иначе ломается sticky у .nav */
+/* нижние углы «плашки». overflow:hidden только тут — на body/html
+   его нельзя, иначе ломается sticky у .nav */
 .page{
   background:var(--bg);
   border-radius:0 0 22px 22px;
@@ -176,7 +165,7 @@ body::before{
 .cart-btn{position:relative;padding-right:14px}
 .cart-count{position:absolute;top:-4px;right:-4px;background:var(--ink);color:var(--bg);font-size:10px;font-weight:700;border-radius:999px;padding:1px 5px;min-width:16px;text-align:center}
 .profile-btn{position:relative}
-/* точка-индикатор: появляется, когда в профиле есть сохранённые данные */
+/* индикатор: горит, если в профиле есть данные */
 .profile-dot{position:absolute;top:2px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--ok);border:1.5px solid var(--bg)}
 
 /* ================= BUTTONS ================= */
@@ -197,14 +186,13 @@ body::before{
 .btn--sm{padding:10px 16px;font-size:11px}
 .btn--lg{padding:18px 28px;font-size:13px}
 
-/* ================= HERO (full-bleed, по референсу) ================= */
+/* ================= HERO ================= */
 .hero{position:relative;min-height:min(880px, 94vh);overflow:hidden;background:var(--bg);isolation:isolate}
 
 .hero__bg{position:absolute;inset:0;z-index:0}
 .hero__bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:grayscale(1) contrast(1.05) brightness(0.85) blur(2.5px)}
 
-/* тёмный градиент слева (под текст) + лёгкое затемнение сверху/снизу — фото на всю секцию,
-   текст лежит прямо на нём, как на референсе, без отдельной тёмной панели-плашки */
+/* градиент слева под текст + затемнение сверху/снизу */
 .hero__scrim{
   position:absolute;inset:0;z-index:1;
   background:
@@ -212,10 +200,9 @@ body::before{
     linear-gradient(180deg, rgba(5,5,5,0.4) 0%, transparent 20%, transparent 76%, rgba(5,5,5,0.75) 100%);
 }
 
-/* рамка содержимого — центрирована и ограничена по ширине (var(--maxw)).
-   Фигура/текст/миниатюры/scan висят на НЕЙ, а не на сырой ширине секции —
-   иначе на широких мониторах текст «плавает» по центру экрана, а фигура
-   улетает к самому правому физическому краю (см. assets/правка1.png). */
+/* центрированная рамка с потолком ширины. Всё позиционируемое
+   (фигура, текст, миниатюры, scan) прижимается к ней, а не к краю
+   экрана — иначе на широких мониторах расползается */
 .hero__frame{
   position:relative;z-index:2;
   max-width:var(--maxw);margin:0 auto;
@@ -224,8 +211,7 @@ body::before{
   container-type:inline-size;
 }
 
-/* размытая граффити-надпись позади фигуры — по референсу, работает
-   для всех 3 цветов куртки (не завязана на конкретное фото) */
+/* размытая граффити-подпись за фигурой */
 .hero__graffiti{
   position:absolute;z-index:1;top:6%;left:50%;
   transform:translateX(-50%) rotate(-3deg);
@@ -242,7 +228,6 @@ body::before{
   mix-blend-mode:screen;pointer-events:none;
 }
 
-/* фигура строго по центру рамки — текст слева, кнопки цвета справа */
 .hero__figure{
   position:absolute;z-index:2;left:50%;bottom:0;transform:translateX(-50%);
   width:clamp(260px, 30%, 400px);height:90%;
@@ -258,16 +243,14 @@ body::before{
 .hero__scan::before{content:"◉";color:var(--danger);animation:blink 1.4s infinite}
 @keyframes blink{50%{opacity:.3}}
 
-/* текстовый блок лежит прямо на фото, прижат к низу и к левому краю рамки —
-   без margin:auto, иначе он центрируется внутри рамки, а не прилегает к краю */
+/* текст прижимаю к низу и к левому краю рамки */
 .hero__content{
   position:relative;z-index:3;height:100%;
   padding:110px 0 120px;
   display:flex;flex-direction:column;justify-content:flex-end;
 }
-/* max-width теперь завязан на cqw РАМКИ (не фикс 440px) — сжимается
-   синхронно с центрированной фигурой на средних desktop-ширинах
-   (~1100-1300px), где раньше был реальный наезд текста на фигуру */
+/* max-width на cqw рамки — текст сжимается синхронно с фигурой,
+   не наезжает на неё на ширинах 1100-1300px */
 .hero__content > *{max-width:min(440px, 26cqw);width:100%;container-type:inline-size}
 .hero__tagline{display:flex;flex-direction:column;gap:8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.24em;color:var(--ink-2);text-transform:uppercase}
 .hero__title{margin:20px 0 0}
@@ -305,9 +288,7 @@ body::before{
 .hero__buy-info span{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-3);text-transform:uppercase}
 .hero__buy-info b{font-family:var(--f-display);font-size:24px;color:var(--ink);font-weight:400}
 
-/* плавающие миниатюры поверх фото справа, как на референсе.
-   right:0 — рамка (.hero__frame) уже даёт padding:var(--pad), двойной
-   отступ не нужен (для absolute containing block служит padding-box) */
+/* плавающие миниатюры цветов справа */
 .hero__thumbs{
   position:absolute;z-index:4;top:110px;right:0;
   display:flex;flex-direction:column;gap:10px;
@@ -332,9 +313,8 @@ body::before{
 .thumb__name{font-family:var(--f-condensed);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
 .thumb--active .thumb__name{color:var(--ink)}
 
-/* бегущая строка — плавающий бар у нижнего края фото. Трек шириной ровно
-   в 2 идентичных набора (width:max-content), поэтому translateX(-50%)
-   всегда попадает точно на границу набора и не рвётся */
+/* бегущая строка внизу hero. Трек = 2 копии контента (width:max-content),
+   translateX(-50%) даёт бесшовный цикл */
 .hero__strip-wrap{
   position:absolute;z-index:5;left:0;right:0;bottom:0;
   padding:14px var(--pad);border-top:1px solid rgba(244,242,238,0.14);
@@ -363,7 +343,7 @@ body::before{
     rgba(5,5,5,0.75) 85%,
     rgba(5,5,5,1) 100%);
 }
-/* мягкий переход сверху: из hero в story, без жёсткого шва */
+/* мягкий переход из hero в story */
 .story::before{
   content:"";position:absolute;top:0;left:0;right:0;height:120px;z-index:1;
   background:linear-gradient(180deg, var(--bg) 0%, transparent 100%);
@@ -451,8 +431,7 @@ body::before{
   padding:6px 10px;background:var(--ink);color:var(--bg);
   font-family:var(--f-mono);font-size:9px;letter-spacing:.24em;
 }
-/* фирменная «призрачная» надпись за фигурой — мягкая заливка вместо жёсткого stroke,
-   размер завязан на ширину самой карточки (cqw), поэтому не съезжает и не рвётся */
+/* «призрачная» подпись KHRUSTIKS за фигурой на карточке */
 .card__media::before{
   content:"KHRUSTIKS";
   position:absolute;z-index:0;top:26%;left:50%;
@@ -513,15 +492,16 @@ body::before{
 }
 .field input:focus, .field textarea:focus{outline:none;border-color:var(--ink)}
 .field input:invalid:not(:placeholder-shown){border-color:var(--danger)}
-.field--radio{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.field--radio{border:0;padding:0;margin:0;display:flex;flex-direction:row;gap:8px;flex-wrap:wrap}
+.field--radio > legend{width:100%;margin-bottom:4px}
 .field--radio > div, .field--radio label{
+  flex:1;min-width:120px;
   display:flex;gap:10px;align-items:center;padding:12px 14px;
   border:1px solid var(--line-2);border-radius:8px;cursor:pointer;font-size:13px;
   transition:border-color .2s,background .2s;
 }
 .field--radio label:has(input:checked){border-color:var(--ink);background:var(--bg-3)}
 .field--radio input{accent-color:var(--ink)}
-.field--radio > legend{margin-bottom:2px}
 .field--check{flex-direction:row;align-items:center;gap:10px;font-size:12px;color:var(--ink-2)}
 .field--check input{width:16px;height:16px;accent-color:var(--ink)}
 
@@ -539,11 +519,6 @@ body::before{
 }
 .order__status.is-ok{border-color:var(--ok);color:var(--ok);background:rgba(123,224,140,0.05)}
 .order__status.is-err{border-color:var(--danger);color:var(--danger);background:rgba(227,93,93,0.05)}
-
-/* переключаем flex-direction для radio-полей корректно */
-.field--radio{display:flex;flex-direction:row;gap:8px;flex-wrap:wrap}
-.field--radio legend{width:100%;margin-bottom:4px}
-.field--radio label{flex:1;min-width:120px}
 
 /* ================= FOOTER ================= */
 .foot{padding:60px var(--pad) 30px;border-top:1px solid var(--line);background:var(--bg)}
@@ -586,12 +561,11 @@ body::before{
   filter:drop-shadow(0 24px 30px rgba(0,0,0,0.55));
 }
 .modal__body{padding:40px 32px;display:flex;flex-direction:column;gap:20px}
-/* профиль — модалка без медиа-колонки (одна форма) */
+/* модалка без медиа-колонки — для профиля и поиска */
 .modal__card--form{grid-template-columns:1fr;max-width:560px}
 .modal__body--full{padding:44px 40px}
 #profileForm{display:flex;flex-direction:column;gap:16px;margin-top:8px}
 
-/* поиск — та же оболочка модалки, что и профиль */
 .search__field{margin-top:8px}
 .search__results{
   display:flex;flex-direction:column;gap:8px;margin-top:20px;
@@ -662,15 +636,9 @@ body::before{
 @media (max-width: 720px){
   .nav{grid-template-columns:1fr auto}
   .nav__links{display:none}
-  /* на мобильном фигура и текст больше не накладываются на фото —
-     фигура в потоке сверху, текст обычным блоком под ней */
+  /* на мобильном перекладываю hero в поток — фигура сверху, текст снизу */
   .hero{min-height:auto}
-  /* frame больше не фиксированной высоты — иначе на мобильном (потоковая
-     раскладка) под фиксированные 94vh остаётся пустой хвост или контент
-     перехлёстывает через край рамки */
   .hero__frame{height:auto;padding:0}
-  /* сбрасываем left/transform от десктопного центрирования — на мобильном
-     фигура в потоке (position:relative), центрируется через margin:auto */
   .hero__figure{position:relative;left:auto;right:auto;bottom:auto;transform:none;width:66%;height:320px;margin:76px auto 0}
   .hero__graffiti{font-size:clamp(36px, 11vw, 64px);top:60px}
   .hero__spotlight{left:50%;width:70%;top:56px}
@@ -679,9 +647,6 @@ body::before{
   .hero__content > *{max-width:100%}
   .hero__thumbs{position:relative;top:auto;right:auto;flex-direction:column;padding:0 var(--pad);margin-top:20px}
   .thumb{width:auto}
-  /* strip был absolute;bottom:0 внутри .hero — на мобильном высота .hero теперь
-     определяется потоком (figure+content+thumbs), и абсолютный низ наезжал
-     на последнюю миниатюру. Возвращаем строку в обычный поток, под миниатюрами */
   .hero__strip-wrap{position:relative;left:auto;right:auto;bottom:auto;margin-top:20px}
   .story__inner{padding:60px 0 80px}
   .story__meta{grid-template-columns:1fr}

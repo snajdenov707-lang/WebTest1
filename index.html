@@ -11,9 +11,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- ================= AUTH GATE (Sign In / Sign Up) =================
-       Открывается первым поверх всего сайта. Без валидации и БД —
-       сабмит любой формы просто закрывает окно и показывает сайт. -->
+  <!-- Auth Gate: открывается первым, сабмит закрывает и показывает сайт -->
   <div class="authgate" id="authGate">
     <div class="authgate__bg" aria-hidden="true">
       <img src="assets/фонрег.jpg" alt="" />
@@ -84,19 +82,16 @@
     </div>
   </header>
 
-  <!-- .page — закруглённый низ «плашки» сайта, overflow:hidden только тут
-       (не на body/html), поэтому sticky-шапка не ломается -->
+  <!-- .page — обёртка контента со скруглённым низом «плашки» -->
   <div class="page">
-  <!-- ================= HERO (full-bleed, по референсу) ================= -->
+  <!-- ================= HERO ================= -->
   <section class="hero" id="top">
     <div class="hero__bg" aria-hidden="true">
       <img src="assets/фонхиро2.jpg" alt="" />
     </div>
     <div class="hero__scrim" aria-hidden="true"></div>
 
-    <!-- всё позиционируемое содержимое живёт в этой центрированной, ограниченной
-         по ширине рамке — иначе на широких мониторах текст «плавает» по центру
-         сырой ширины секции, а фигура улетает к самому правому краю -->
+    <!-- центрированная рамка, чтобы контент не расползался на широких экранах -->
     <div class="hero__frame">
       <div class="hero__graffiti" aria-hidden="true">KHRUSTIKS</div>
       <div class="hero__spotlight" aria-hidden="true"></div>
@@ -158,8 +153,7 @@
 
     <div class="hero__strip-wrap" aria-hidden="true">
       <div class="hero__strip">
-        <!-- набор фраз повторён 5 раз в каждой половине — трек шире любого монитора,
-             translateX(-50%) всегда точно совпадает с границей набора -->
+        <!-- две одинаковые половины — трек длиннее экрана, translateX(-50%) даёт бесшовный цикл -->
         <span>KHRUSTIKS</span><span>◆</span>
         <span>ARCTIC 01</span><span>◆</span>
         <span>MADE FOR THE COLD</span><span>◆</span>
@@ -180,7 +174,6 @@
         <span>ARCTIC 01</span><span>◆</span>
         <span>MADE FOR THE COLD</span><span>◆</span>
         <span>WINTER 2026</span><span>◆</span>
-        <!-- вторая половина — точная копия первой -->
         <span>KHRUSTIKS</span><span>◆</span>
         <span>ARCTIC 01</span><span>◆</span>
         <span>MADE FOR THE COLD</span><span>◆</span>
@@ -205,7 +198,7 @@
     </div>
   </section>
 
-  <!-- ================= STORY / MOUNTAIN BANNER (ref 4) ================= -->
+  <!-- ================= STORY / MOUNTAIN BANNER ================= -->
   <section class="story" id="story">
     <div class="story__bg" aria-hidden="true">
       <img src="assets/story-mountains.jpg" alt="" />
@@ -239,7 +232,7 @@
     </div>
   </section>
 
-  <!-- ================= COLLECTION GRID (ref 3) ================= -->
+  <!-- ================= COLLECTION GRID ================= -->
   <section class="collection" id="collection">
     <header class="collection__header">
       <div>

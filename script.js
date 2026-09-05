@@ -1,6 +1,5 @@
 // ============ AUTH GATE (Sign In / Sign Up) ============
-// Пока без бэкенда: сабмит любой формы просто закрывает окно и
-// открывает сайт. Валидация полей — только браузерная (required).
+// Без бэкенда: сабмит любой формы просто закрывает окно и показывает сайт.
 (function initAuthGate(){
   const gate = document.getElementById("authGate");
   if (!gate) return;
@@ -71,19 +70,14 @@ const CATALOG = {
   },
 };
 
-// ============ CRM / БАЗА ДАННЫХ (Supabase) ============
-// Заявки летят напрямую в таблицу public.orders проекта Supabase
-// (организация Khrust, проект zendention). Смотреть заявки —
-// в Supabase Dashboard → Table Editor → orders (см. crm/setup.md).
-// Ключ ниже — publishable (анонимный, только на INSERT по RLS-политике,
-// читать чужие заявки с ним нельзя) — это нормально светить на клиенте.
-const SUPABASE_URL = "https://sexrlsgmibzxajqekemy.supabase.co";
-const SUPABASE_KEY = "sb_publishable_KJVs9700LAvmXCFvdfaPRA_UiXnlpUQ";
+// Supabase — заявки идут в public.khrustiks_orders (проект dark-deed).
+// Ключ publishable — только INSERT для anon по RLS, чтение/правка недоступны.
+const SUPABASE_URL = "https://nrwxylnanldzvkufxtsw.supabase.co";
+const SUPABASE_KEY = "sb_publishable_lCPJHdNB1xs3e0BmWo3HOw_e7swipoK";
 
-// (опционально, можно оставить пустым) — если вставишь сюда URL веб-приложения
-// из Google Apps Script (см. crm/setup.md), заявки ДОПОЛНИТЕЛЬНО продублируются
-// и в Google Таблицу, параллельно с Supabase.
-const CRM_ENDPOINT = ""; // "https://script.google.com/macros/s/AKfycb.../exec"
+// Опциональный дубль в Google Sheets — если задать URL Apps Script,
+// заявки полетят параллельно и туда (см. crm/setup.md).
+const CRM_ENDPOINT = "";
 
 // ============ STATE ============
 const state = {
@@ -92,8 +86,7 @@ const state = {
   color: null,       // ключ CATALOG (для смены цвета в модалке)
 };
 
-// быстрый выбор размера прямо на первом экране (как в референсе) —
-// подхватывается модалкой при открытии, чтобы не выбирать размер дважды
+// быстрый выбор размера на первом экране; модалка подхватывает его при открытии
 let heroQuickSize = "M";
 document.querySelectorAll(".hero__sizes .size-chip").forEach(chip => {
   chip.addEventListener("click", () => {
@@ -192,7 +185,7 @@ window.openProduct = openProduct;
 window.closeProduct = closeProduct;
 
 // ============ ПРОФИЛЬ (адрес доставки + способ оплаты) ============
-// Бэкенда пока нет — данные хранятся в localStorage браузера.
+// Данные хранятся в localStorage браузера.
 const PROFILE_KEY = "khrustiks_profile";
 
 function loadProfile(){
@@ -335,8 +328,7 @@ function fillOrder(){
   const cc = $("cartCount");
   cc.textContent = (parseInt(cc.textContent, 10) || 0) + 1;
 
-  // подставляем сохранённые в профиле контакты/адрес — только в пустые поля,
-  // чтобы не затирать то, что покупатель уже успел напечатать
+  // подставляем данные профиля только в пустые поля
   const saved = loadProfile();
   if (saved) {
     const orderForm = $("orderForm");
@@ -375,8 +367,8 @@ document.getElementById("orderForm").addEventListener("submit", async e => {
   data.source = "khrustiks.ru";
 
   try {
-    // основной путь — реальная запись в Supabase (public.orders)
-    const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+    // основной путь: запись в Supabase (public.khrustiks_orders)
+    const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/khrustiks_orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -403,14 +395,13 @@ document.getElementById("orderForm").addEventListener("submit", async e => {
     });
     if (!dbRes.ok) throw new Error("HTTP " + dbRes.status);
 
-    // (опционально) дублируем в Google Таблицу — best-effort, не роняем
-    // успешную заявку, если этот шаг не настроен или временно недоступен
+    // опционально: дубль в Google Sheets, ошибка тут не роняет успешную заявку
     if (CRM_ENDPOINT) {
       fetch(CRM_ENDPOINT, {
         method: "POST",
         headers: {"Content-Type": "text/plain;charset=utf-8"},
         body: JSON.stringify(data),
-      }).catch(err => console.warn("[KHRUSTIKS] Google Sheets дубль не отправился:", err));
+      }).catch(err => console.warn("Sheets duplicate failed:", err));
     }
 
     status.classList.add("is-ok");
