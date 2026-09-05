@@ -1,0 +1,38 @@
+# === Operating system ===
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+._*
+
+# === Editors / IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# === Runtime / логи локального сервера ===
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# === node_modules (если появится сборка) ===
+node_modules/
+dist/
+build/
+
+# === Env файлы (сейчас в проекте нет, но на будущее — если появятся
+# приватные ключи, например Supabase service_role, GitHub secrets и т.п.) ===
+.env
+.env.local
+.env.*.local
+
+# === Локальный запуск / отладка ===
+.claude/local/
+scratch/
+tmp/
