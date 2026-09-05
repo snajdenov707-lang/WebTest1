@@ -590,6 +590,36 @@ body::before{
 .modal__card--form{grid-template-columns:1fr;max-width:560px}
 .modal__body--full{padding:44px 40px}
 #profileForm{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+
+/* поиск — та же оболочка модалки, что и профиль */
+.search__field{margin-top:8px}
+.search__results{
+  display:flex;flex-direction:column;gap:8px;margin-top:20px;
+  max-height:340px;overflow-y:auto;
+}
+.search__empty{
+  padding:24px 4px;text-align:center;
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--ink-3);
+  text-transform:uppercase;
+}
+.search__item{
+  display:flex;align-items:center;gap:14px;width:100%;text-align:left;
+  padding:10px;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--bg-3);transition:border-color .2s,transform .15s;
+}
+.search__item:hover{border-color:var(--ink-3);transform:translateY(-1px)}
+.search__item-media{
+  width:52px;height:64px;border-radius:8px;flex-shrink:0;overflow:hidden;
+  display:flex;align-items:flex-end;justify-content:center;
+}
+.search__item-media img{width:100%;height:100%;object-fit:contain;object-position:bottom}
+.search__item-media--black{background:radial-gradient(ellipse at bottom,#1a1a1a,#050505)}
+.search__item-media--grey{background:radial-gradient(ellipse at bottom,#3a3a3a,#0a0a0a)}
+.search__item-media--white{background:radial-gradient(ellipse at bottom,#5a5a5a,#0a0a0a)}
+.search__item-body{flex:1;min-width:0}
+.search__item-name{font-family:var(--f-display);font-size:15px;letter-spacing:.01em}
+.search__item-sub{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:var(--ink-3);text-transform:uppercase;margin-top:3px}
+.search__item-price{font-family:var(--f-display);font-size:14px;color:var(--ink);flex-shrink:0}
 .modal__eye{font-family:var(--f-mono);font-size:11px;letter-spacing:.24em;color:var(--ink-3);text-transform:uppercase}
 .modal__title{margin:0;font-family:var(--f-display);font-size:44px;letter-spacing:-.01em}
 .modal__desc{color:var(--ink-2);font-size:14px;margin:0}

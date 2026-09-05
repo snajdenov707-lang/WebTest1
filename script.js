@@ -185,7 +185,7 @@ function closeProduct(){
   document.body.style.overflow = "";
 }
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeProduct(); closeProfile(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeProduct(); closeProfile(); closeSearch(); } });
 
 // делаем функции доступными глобально (используются в onclick=)
 window.openProduct = openProduct;
@@ -252,6 +252,70 @@ if (profileForm) {
 }
 
 refreshProfileDot();
+
+// ============ ПОИСК ПО КАТАЛОГУ ============
+const searchModal = $("searchModal");
+const searchInput = $("searchInput");
+const searchResults = $("searchResults");
+
+function openSearch(){
+  searchModal.hidden = false;
+  document.body.style.overflow = "hidden";
+  searchInput.value = "";
+  renderSearchResults("");
+  setTimeout(() => searchInput.focus(), 50);
+}
+
+function closeSearch(){
+  searchModal.hidden = true;
+  document.body.style.overflow = "";
+}
+window.openSearch = openSearch;
+window.closeSearch = closeSearch;
+
+function renderSearchResults(query){
+  const q = query.trim().toLowerCase();
+
+  if (!q) {
+    searchResults.innerHTML = `<div class="search__empty">Начните вводить название куртки или цвет.</div>`;
+    return;
+  }
+
+  const matches = Object.entries(CATALOG).filter(([key, p]) =>
+    p.name.toLowerCase().includes(q) ||
+    p.color.toLowerCase().includes(q) ||
+    p.line.toLowerCase().includes(q) ||
+    key.includes(q)
+  );
+
+  if (!matches.length) {
+    searchResults.innerHTML = `<div class="search__empty">Ничего не нашлось по «${query}».</div>`;
+    return;
+  }
+
+  searchResults.innerHTML = matches.map(([key, p]) => `
+    <button class="search__item" onclick="selectSearchResult('${key}')">
+      <span class="search__item-media search__item-media--${key === "glacier" ? "white" : key === "ashfall" ? "grey" : "black"}">
+        <img src="${p.photo}" alt="" />
+      </span>
+      <span class="search__item-body">
+        <span class="search__item-name">${p.name}</span>
+        <span class="search__item-sub">${p.line} · ${p.color}</span>
+      </span>
+      <span class="search__item-price">${p.priceLabel}</span>
+    </button>
+  `).join("");
+}
+
+function selectSearchResult(key){
+  closeSearch();
+  openProduct(key);
+}
+window.selectSearchResult = selectSearchResult;
+
+if (searchInput) {
+  searchInput.addEventListener("input", () => renderSearchResults(searchInput.value));
+}
 
 // ============ ЗАПОЛНЕНИЕ ФОРМЫ ============
 function fillOrder(){

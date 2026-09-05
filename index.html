@@ -74,7 +74,7 @@
       <a href="#order">Заказ</a>
     </nav>
     <div class="nav__meta">
-      <button class="icon-btn" aria-label="Поиск">⌕</button>
+      <button class="icon-btn" aria-label="Поиск" onclick="openSearch()">⌕</button>
       <button class="icon-btn profile-btn" aria-label="Профиль" onclick="openProfile()">
         <span>◯</span><span class="profile-dot" id="profileDot" hidden></span>
       </button>
@@ -536,6 +536,28 @@
 
           <div class="order__status" id="profileStatus" hidden></div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SEARCH MODAL ================= -->
+  <div class="modal" id="searchModal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="searchTitle">
+    <div class="modal__backdrop" onclick="closeSearch()"></div>
+    <div class="modal__card modal__card--form">
+      <button class="modal__close" onclick="closeSearch()" aria-label="Закрыть">✕</button>
+      <div class="modal__body modal__body--full">
+        <div class="modal__eye">КАТАЛОГ</div>
+        <h3 class="modal__title" id="searchTitle">Поиск</h3>
+        <p class="modal__desc">Название, цвет — например «obsidian» или «белый».</p>
+
+        <label class="field search__field">
+          <span>ЗАПРОС</span>
+          <input type="search" id="searchInput" placeholder="OBSIDIAN, ASHFALL, GLACIER…" autocomplete="off" />
+        </label>
+
+        <div class="search__results" id="searchResults">
+          <div class="search__empty">Начните вводить название куртки или цвет.</div>
+        </div>
       </div>
     </div>
   </div>
